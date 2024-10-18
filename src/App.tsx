@@ -7,6 +7,7 @@ export default function App() {
       <ModeToggle>
       </ModeToggle>
       <Button variant="default">Button</Button>
+      <h1>HII LODU 😁</h1>
     </>
   );
 }
