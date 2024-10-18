@@ -100,7 +100,7 @@ const TitleSection = ({ open }: { open: boolean }) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.125 }}
                         >
-                            <span className={theme === "dark" ? "block text-xs font-semibold text-gray-200" : "block text-xs font-semibold text-gray-900"}>
+                            <span className={theme === "dark" ? "ml-4 block text-lg font-semibold text-gray-200" : "ml-4 block text-lg font-semibold text-gray-900"}>
                                 Round Zero
                             </span>
                         </motion.div>
