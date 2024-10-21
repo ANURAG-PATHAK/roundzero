@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { IconType } from "react-icons";
 import { FiChevronsRight, FiHome } from "react-icons/fi";
 import { IoHammerOutline } from "react-icons/io5";
@@ -9,7 +9,7 @@ import { useTheme } from "@/components/ui/theme-provider";
 import { TbFileCv } from "react-icons/tb";
 import { AiOutlineTeam } from "react-icons/ai";
 
-
+// Tooltip component
 const Tooltip = ({ title }: { title: string }) => (
     <motion.div
         className="absolute left-full top-1/4 transform -translate-y-1/3 z-10 w-max rounded bg-gray-700 text-white text-xs p-1 ml-1.5 opacity-0 transition-opacity duration-200"
@@ -21,7 +21,7 @@ const Tooltip = ({ title }: { title: string }) => (
     </motion.div>
 );
 
-
+// Option component for each menu item
 const Option = ({
     Icon,
     title,
@@ -48,9 +48,7 @@ const Option = ({
             onClick={() => setSelected(title)}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
-
-            className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selected === title ? selectedBg : defaultText
-                }`}
+            className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selected === title ? selectedBg : defaultText}`}
         >
             <motion.div layout className="grid h-full w-10 place-content-center text-lg">
                 <Icon />
@@ -86,6 +84,7 @@ const Option = ({
     );
 };
 
+// TitleSection component
 const TitleSection = ({ open }: { open: boolean }) => {
     const { theme } = useTheme();
     return (
@@ -111,6 +110,7 @@ const TitleSection = ({ open }: { open: boolean }) => {
     );
 };
 
+// Logo component
 const Logo = () => {
     return (
         <motion.div layout className="grid size-10 shrink-0 place-content-center rounded-md bg-indigo-600">
@@ -119,6 +119,7 @@ const Logo = () => {
     );
 };
 
+// ToggleClose component for collapsing the navbar
 const ToggleClose = ({
     open,
     setOpen,
@@ -133,8 +134,7 @@ const ToggleClose = ({
         <motion.button
             layout
             onClick={() => setOpen((pv) => !pv)}
-            className={`absolute bottom-0 left-0 right-0 border-t transition-colors ${hoverBg} ${theme === "dark" ? "border-slate-700" : "border-slate-300"
-                }`}
+            className={`absolute bottom-0 left-0 right-0 border-t transition-colors ${hoverBg} ${theme === "dark" ? "border-slate-700" : "border-slate-300"}`}
         >
             <div className="flex items-center p-2">
                 <motion.div layout className="grid size-10 place-content-center text-lg">
@@ -156,22 +156,41 @@ const ToggleClose = ({
     );
 };
 
+// Main Navbar component
 export default function Navbar() {
     const [open, setOpen] = useState(true);
     const [selected, setSelected] = useState("Dashboard");
     const { theme } = useTheme();
 
+    // useEffect to close the navbar on small screens
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setOpen(false);
+            }
+        };
+
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+
+        // Call handler right away to set the initial state
+        handleResize();
+
+        // Cleanup function to remove event listener
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <motion.nav
             layout
-            className={`sticky top-0 h-screen shrink-0 border-r p-2 transition-colors ${theme === "dark" ? "bg-gray-900 border-slate-700" : "bg-white border-slate-300"
-                }`}
+            className={`sticky top-0 h-screen shrink-0 border-r p-2 transition-colors ${theme === "dark" ? "bg-gray-900 border-slate-700" : "bg-white border-slate-300"}`}
             style={{
                 width: open ? "225px" : "fit-content",
             }}
         >
             <TitleSection open={open} />
-
             <div className="space-y-1">
                 <Option Icon={FiHome} title="Home" selected={selected} setSelected={setSelected} open={open} />
                 <Option Icon={GrScorecard} title="Score Resume" selected={selected} setSelected={setSelected} open={open} />
