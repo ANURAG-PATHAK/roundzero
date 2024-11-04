@@ -8,8 +8,8 @@ import { images } from "../constants";
 import { useTheme } from "@/components/ui/theme-provider";
 import { TbFileCv } from "react-icons/tb";
 import { AiOutlineTeam } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
-// Tooltip component
 const Tooltip = ({ title }: { title: string }) => (
     <motion.div
         className="absolute left-full top-1/4 transform -translate-y-1/3 z-10 w-max rounded bg-gray-700 text-white text-xs p-1 ml-1.5 opacity-0 transition-opacity duration-200"
@@ -21,31 +21,34 @@ const Tooltip = ({ title }: { title: string }) => (
     </motion.div>
 );
 
-// Option component for each menu item
 const Option = ({
     Icon,
     title,
     selected,
     setSelected,
     open,
-    notifs,
+    href,
 }: {
     Icon: IconType;
     title: string;
     selected: string;
     setSelected: Dispatch<SetStateAction<string>>;
     open: boolean;
-    notifs?: number;
+    href: string;
 }) => {
     const { theme } = useTheme();
     const selectedBg = theme === "dark" ? "bg-indigo-700 text-indigo-200" : "bg-indigo-200 text-indigo-700";
     const defaultText = theme === "dark" ? "text-gray-400 hover:bg-gray-700" : "text-gray-700 hover:bg-gray-200";
     const [showTooltip, setShowTooltip] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <motion.button
             layout
-            onClick={() => setSelected(title)}
+            onClick={() => {
+                setSelected(title);
+                navigate(href);
+            }}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
             className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selected === title ? selectedBg : defaultText}`}
@@ -68,29 +71,18 @@ const Option = ({
                     {title}
                 </motion.span>
             )}
-
-            {notifs && open && (
-                <motion.span
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    style={{ y: "-50%" }}
-                    transition={{ delay: 0.5 }}
-                    className="absolute right-2 top-1/2 size-4 rounded bg-indigo-500 text-xs text-white"
-                >
-                    {notifs}
-                </motion.span>
-            )}
         </motion.button>
     );
 };
 
-// TitleSection component
 const TitleSection = ({ open }: { open: boolean }) => {
     const { theme } = useTheme();
+    const navigate = useNavigate();
+
     return (
         <div className={`mb-3 border-b pb-3 ${theme === "dark" ? "border-slate-700" : "border-slate-300"}`}>
             <div className={`flex cursor-pointer items-center justify-between rounded-md transition-colors`}>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" onClick={() => navigate("/")}>
                     <Logo />
                     {open && (
                         <motion.div
@@ -110,7 +102,6 @@ const TitleSection = ({ open }: { open: boolean }) => {
     );
 };
 
-// Logo component
 const Logo = () => {
     return (
         <motion.div layout className="grid size-10 shrink-0 place-content-center rounded-md bg-indigo-600">
@@ -119,7 +110,6 @@ const Logo = () => {
     );
 };
 
-// ToggleClose component for collapsing the navbar
 const ToggleClose = ({
     open,
     setOpen,
@@ -156,27 +146,19 @@ const ToggleClose = ({
     );
 };
 
-// Main Navbar component
 export default function Navbar() {
     const [open, setOpen] = useState(true);
     const [selected, setSelected] = useState("Dashboard");
     const { theme } = useTheme();
 
-    // useEffect to close the navbar on small screens
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) {
                 setOpen(false);
             }
         };
-
-        // Add event listener
         window.addEventListener("resize", handleResize);
-
-        // Call handler right away to set the initial state
         handleResize();
-
-        // Cleanup function to remove event listener
         return () => {
             window.removeEventListener("resize", handleResize);
         };
@@ -192,11 +174,11 @@ export default function Navbar() {
         >
             <TitleSection open={open} />
             <div className="space-y-1">
-                <Option Icon={FiHome} title="Home" selected={selected} setSelected={setSelected} open={open} />
-                <Option Icon={GrScorecard} title="Score Resume" selected={selected} setSelected={setSelected} open={open} />
-                <Option Icon={IoHammerOutline} title="Build Resume" selected={selected} setSelected={setSelected} open={open} />
-                <Option Icon={TbFileCv} title="Build CV" selected={selected} setSelected={setSelected} open={open} />
-                <Option Icon={AiOutlineTeam} title="Prepare Interview" selected={selected} setSelected={setSelected} open={open} />
+                <Option Icon={FiHome} title="Home" selected={selected} setSelected={setSelected} open={open} href="/" />
+                <Option Icon={GrScorecard} title="Score Resume" selected={selected} setSelected={setSelected} open={open} href="/resume-scorer" />
+                <Option Icon={IoHammerOutline} title="Build Resume" selected={selected} setSelected={setSelected} open={open} href="/resume-builder" />
+                <Option Icon={TbFileCv} title="Build CV" selected={selected} setSelected={setSelected} open={open} href="/cover-letter-builder" />
+                <Option Icon={AiOutlineTeam} title="Prepare Interview" selected={selected} setSelected={setSelected} open={open} href="/prepare-interview" />
             </div>
             <ToggleClose open={open} setOpen={setOpen} />
         </motion.nav>
