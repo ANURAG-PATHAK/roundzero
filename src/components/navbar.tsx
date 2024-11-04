@@ -148,7 +148,7 @@ const ToggleClose = ({
 
 export default function Navbar() {
     const [open, setOpen] = useState(true);
-    const [selected, setSelected] = useState("Dashboard");
+    const [selected, setSelected] = useState("Home");
     const { theme } = useTheme();
 
     useEffect(() => {

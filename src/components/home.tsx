@@ -6,7 +6,7 @@ const Hero = () => {
     const { theme } = useTheme();
 
     return (
-        <section className={`container flex flex-col items-center justify-center w-full h-screen transition-colors ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+        <section className={`flex flex-col items-center justify-center w-full h-screen transition-colors ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
             <motion.h1
                 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 text-center"
                 initial={{ opacity: 0, y: -50 }}

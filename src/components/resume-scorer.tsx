@@ -8,7 +8,7 @@ const ResumeScorer = () => {
     const { theme } = useTheme();
 
     return (
-        <section className={`container flex flex-col items-center justify-center w-full min-h-screen transition-colors ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+        <section className={`flex flex-col items-center justify-center w-full min-h-screen transition-colors ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
             <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl px-4">
                 <motion.div
                     className="w-full lg:w-1/2"
