@@ -1,6 +1,6 @@
 "use client"
 
-import Navbar from '@/src/components/Navbar'
+import Navbar from '@/components/Navbar'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import CustomCursor from '@/components/ui/CustomCursor'
 import { motion } from 'framer-motion'
